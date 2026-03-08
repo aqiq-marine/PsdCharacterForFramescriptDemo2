@@ -39,6 +39,9 @@ type HasKey<K extends string, V = unknown> = {
   [P in K]: V
 } & Record<string, unknown>
 
+
+// lip sync --------------------------------
+
 export type LipSyncData  = HasKey<"mouthCues", {start: number, end: number, value: string}[]>
 
 export type LipSyncProps = {
@@ -108,3 +111,78 @@ const lipSyncValueToMouthShape = (value: string): MouthShape => {
   }
 }
 
+// blink --------------------------------
+//
+export type BlinkData = HasKey<"blinkCues", {start: number, end: number, value: string}[]>
+
+export type BlinkProps = {
+  data: BlinkData
+}
+
+export const createBlink = (eyeOptions: EyeOptions) => {
+  return ({ data }: BlinkProps) => {
+    return <Motion motion={(_v, frames) => {
+
+      const t = framesToSeconds(frames[1])
+      const sections = data.blinkCues
+      
+      let lo = 0
+      let hi = sections.length - 1
+      let idx = -1
+      
+      while (lo <= hi) {
+        const mid = (lo + hi) >> 1
+      
+        if (sections[mid].start <= t) {
+          idx = mid
+          lo = mid + 1
+        } else {
+          hi = mid - 1
+        }
+      }
+      
+      let shape: EyeShape | undefined = undefined
+      if (idx !== -1 && t < sections[idx].end) {
+        shape = BlinkValueToEyeShape(sections[idx].value)
+      }
+
+      if (!shape) {
+        return {}
+      }
+
+
+      if (eyeOptions.kind === "enum") {
+        return {
+          [eyeOptions.options.Eye]: eyeOptions.options[shape]
+        }
+      } else if (eyeOptions.options[shape] == eyeOptions.options.Default) {
+        return {
+          [eyeOptions.options.Default]: true
+        }
+      } else {
+        const opt = {
+          [eyeOptions.options.Default]: false,
+          [eyeOptions.options[shape]]: true
+        }
+
+        return opt
+      }
+
+    }} />
+  }
+}
+
+const BlinkValueToEyeShape = (value: string): EyeShape => {
+  switch (value) {
+    case "A":
+      return "Open"
+    case "B":
+      return "HalfOpen"
+    case "C":
+      return "HalfClosed"
+    case "D":
+      return "Closed"
+    default:
+      return "Open"
+  }
+}
