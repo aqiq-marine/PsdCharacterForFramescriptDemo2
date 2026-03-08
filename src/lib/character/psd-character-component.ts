@@ -18,7 +18,7 @@ export const Block = defineDSL<{
 
 export const DeclareAnimation = defineDSL<{
   f: (ctx: any, variable: Record<string, Variable<any>>) => Promise<void>
-  children?: React.ReactNode
+  children: React.ReactNode
 }>(PsdCharacterElement.DeclareAnimation)
 
 export const Voice = defineDSL<{
