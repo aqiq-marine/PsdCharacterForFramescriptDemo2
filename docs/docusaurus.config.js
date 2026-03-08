@@ -1,7 +1,7 @@
 const config = {
   title: "FrameScript Docs",
   tagline: "Hello, world!",
-  url: "https://frame-script.github.io",
+  url: "https://aqiq-marine.github.io",
   baseUrl: "/PsdCharacterForFramescriptDemo2/",
   organizationName: "frame-script",
   projectName: "FrameScript",
