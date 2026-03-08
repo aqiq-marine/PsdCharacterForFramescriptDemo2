@@ -1,14 +1,6 @@
 import type { Variable } from "../animation"
 import { defineDSL } from "./defineDSL"
-
-export const PsdCharacterElement = {
-    MotionSequence: "MotionSequence",
-    DeclareVariable: "DeclareVariable",
-    Block: "Block",
-    DeclareAnimation: "DeclareAnimation",
-    Voice: "Voice",
-    Motion: "Motion",
-}
+import { PsdCharacterElement } from "./ast"
 
 export const MotionSequence = defineDSL<{
   children: React.ReactNode

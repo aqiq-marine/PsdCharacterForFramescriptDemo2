@@ -1,5 +1,16 @@
 import type { Variable } from "../animation"
 
+export const PsdCharacterElement = {
+    Character: "Character",
+    MotionSequence: "MotionSequence",
+    DeclareVariable: "DeclareVariable",
+    Block: "Block",
+    DeclareAnimation: "DeclareAnimation",
+    Voice: "Voice",
+    Motion: "Motion",
+} as const
+
+
 export type CharacterChild =
   | MotionSequenceNode
   | DeclareVariableNode
@@ -35,41 +46,41 @@ export type VoiceChild =
 
 
 export interface CharacterNode {
-  type: "Character"
+  type: typeof PsdCharacterElement.Character
   children: CharacterChild[]
 }
 
 export interface MotionSequenceNode {
-  type: "MotionSequence"
+  type: typeof PsdCharacterElement.MotionSequence
   children: MotionSequenceChild[]
 }
 
 export interface DeclareVariableNode {
-  type: "DeclareVariable"
+  type: typeof PsdCharacterElement.DeclareVariable
   variableName: string
   initValue: any
   children: DeclareVariableChild
 }
 
 export interface BlockNode {
-  type: "Block"
-  body: BlockChild[]
+  type: typeof PsdCharacterElement.Block
+  children: BlockChild[]
 }
 
 export interface DeclareAnimationNode {
-  type: "Animation"
+  type: typeof PsdCharacterElement.DeclareAnimation
   f: (ctx: any, variable: Record<string, Variable<any>>) => Promise<void>
-  body: DeclareAnimationChild[]
+  children: DeclareAnimationChild[]
 }
 
 export interface VoiceNode {
-  type: "Voice"
+  type: typeof PsdCharacterElement.Voice
   voice: string
   children: VoiceChild[]
 }
 
 export interface MotionNode {
-  type: "Motion"
+  type: typeof PsdCharacterElement.Motion
   motion: (variables: Record<string, Variable<any>>, frames: number[]) => Record<string, any>
 }
 
